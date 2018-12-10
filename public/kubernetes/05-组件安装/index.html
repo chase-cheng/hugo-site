@@ -9,7 +9,7 @@
 
     <link rel="shortcut icon" href="http://example.org/images/favicon.png" type="image/x-icon" />
 <link rel="icon" href="http://example.org/images/favicon.png" type="image/x-icon" />
-    <title>Index :: Learning</title>
+    <title>05-组件安装 :: Learning</title>
 
     
     <link href="http://example.org/css/nucleus.css?1544425800" rel="stylesheet">
@@ -36,7 +36,7 @@
     </style>
     
   </head>
-  <body class="" data-url="/">
+  <body class="" data-url="/kubernetes/05-%E7%BB%84%E4%BB%B6%E5%AE%89%E8%A3%85/">
     <nav id="sidebar" class="showVisitedLinks">
 
 
@@ -95,7 +95,7 @@
   
     
     <li data-nav-id="/kubernetes/" title="Kubernetes" class="dd-item 
-        
+        parent
         
         
         ">
@@ -178,7 +178,7 @@
  
   
     
-      <li data-nav-id="/kubernetes/05-%E7%BB%84%E4%BB%B6%E5%AE%89%E8%A3%85/" title="05-组件安装" class="dd-item ">
+      <li data-nav-id="/kubernetes/05-%E7%BB%84%E4%BB%B6%E5%AE%89%E8%A3%85/" title="05-组件安装" class="dd-item active">
         <a href="http://example.org/kubernetes/05-%E7%BB%84%E4%BB%B6%E5%AE%89%E8%A3%85/">
         05-组件安装
         <i class="fas fa-check read-icon"></i>
@@ -371,21 +371,79 @@
         <div id="overlay"></div>
         <div class="padding highlightable">
               
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                 
+                 
+                   05-组件安装 
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+<ul>
+<li><a href="#kubernetes-dashboard">Kubernetes-Dashboard</a></li>
+<li><a href="#prometheus">Prometheus</a></li>
+</ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
 
         
         <div id="body-inner">
           
+            <h1>05-组件安装</h1>
+          
 
         
 
-<span id="sidebar-toggle-span">
-<a href="#" id="sidebar-toggle" data-sidebar-toggle=""><i class="fas fa-bars"></i> navigation</a>
-</span>
 
- 
-<p>Notebook</p>
+
+
+<h1 id="kubernetes-dashboard">Kubernetes-Dashboard</h1>
+
+<p>官网下载的yaml，rbac 没有权限访问，需要将 role改为 clusterrole</p>
+
+<pre><code>kubectl create -f kubernetes-dashboard.yaml
+</code></pre>
+
+<p>获取刚刚创建的 kubernetes-dashboard-token</p>
+
+<pre><code>kubectl describe -n kube-system secret/`kubectl -n kube-system get secret | grep kubernetes-dashboard-admin-token | awk '{print $1}'`
+</code></pre>
+
+<h1 id="prometheus">Prometheus</h1>
+
+<p>需要创建 ClusterRole, ServiceAccount, ClusterRoleBinding,ConfigMap,Deployment,Service</p>
+
+<pre><code>kubectl create -f prometheus.yaml
+</code></pre>
+
+
+<footer class=" footline" >
 	
-  
+</footer>
+
+
         
         </div> 
         
@@ -417,8 +475,6 @@
             
                 
                     
-                        
-                        
                     
                 
                 
@@ -432,6 +488,9 @@
             
             
                 
+                    
+                        
+                        
                     
                 
                 
@@ -481,6 +540,7 @@
             
                 
                     
+                    
                 
                 
 
@@ -496,6 +556,9 @@
             
             
                 
+                    
+                        
+                        
                     
                 
                 

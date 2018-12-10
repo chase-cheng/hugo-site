@@ -9,7 +9,7 @@
 
     <link rel="shortcut icon" href="http://example.org/images/favicon.png" type="image/x-icon" />
 <link rel="icon" href="http://example.org/images/favicon.png" type="image/x-icon" />
-    <title>Index :: Learning</title>
+    <title> :: Learning</title>
 
     
     <link href="http://example.org/css/nucleus.css?1544425800" rel="stylesheet">
@@ -36,7 +36,7 @@
     </style>
     
   </head>
-  <body class="" data-url="/">
+  <body class="" data-url="/kubernetes/04-kubernetes%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/">
     <nav id="sidebar" class="showVisitedLinks">
 
 
@@ -95,7 +95,7 @@
   
     
     <li data-nav-id="/kubernetes/" title="Kubernetes" class="dd-item 
-        
+        parent
         
         
         ">
@@ -254,7 +254,7 @@
  
   
     
-      <li data-nav-id="/kubernetes/04-kubernetes%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/" title="" class="dd-item ">
+      <li data-nav-id="/kubernetes/04-kubernetes%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/" title="" class="dd-item active">
         <a href="http://example.org/kubernetes/04-kubernetes%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/">
         
         <i class="fas fa-check read-icon"></i>
@@ -371,21 +371,152 @@
         <div id="overlay"></div>
         <div class="padding highlightable">
               
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                 
+                 
+                    
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+<ul>
+<li><a href="#kubernetes-集群搭建">Kubernetes 集群搭建</a>
+<ul>
+<li><a href="#初始化集群">初始化集群</a></li>
+<li><a href="#检查-master-组件是否起动完成">检查 master 组件是否起动完成</a></li>
+<li><a href="#检查-kube-proxy-组件是否起动完成">检查 kube-proxy 组件是否起动完成</a></li>
+<li><a href="#去掉污点">去掉污点</a></li>
+<li><a href="#初始化网络插件-flannel-配置">初始化网络插件 flannel 配置</a></li>
+<li><a href="#添加slave节点">添加slave节点</a></li>
+<li><a href="#检查各节点是否正常">检查各节点是否正常</a></li>
+<li><a href="#集群重置">集群重置</a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
 
         
         <div id="body-inner">
           
+            <h1></h1>
+          
 
         
 
-<span id="sidebar-toggle-span">
-<a href="#" id="sidebar-toggle" data-sidebar-toggle=""><i class="fas fa-bars"></i> navigation</a>
-</span>
 
- 
-<p>Notebook</p>
+
+
+<h1 id="kubernetes-集群搭建">Kubernetes 集群搭建</h1>
+
+<p>kubeadm v1.12.2<br />
+kubernetes v1.12</p>
+
+<h2 id="初始化集群">初始化集群</h2>
+
+<p>可根据需求自定义 kubeadm yaml 文件
+官网文档： <a href="https://godoc.org/k8s.io/kubernetes/cmd/kubeadm/app/apis/kubeadm/v1alpha3">https://godoc.org/k8s.io/kubernetes/cmd/kubeadm/app/apis/kubeadm/v1alpha3</a></p>
+
+<pre><code># kubeadm init --config kubeadm.yaml
+kubeadm init  --kubernetes-version=v1.12.2 --pod-network-cidr=10.244.0.0/16 
+</code></pre>
+
+<p><strong>注意：pod-network-cidr 设置的网段与后续要创建的 flannel 的 Network 一致</strong></p>
+
+<p>如果报错提示  [WARNING Hostname]: hostname &ldquo;xxxxxx&rdquo; could not be reached ,可在 /etc/hosts 配置主机名和ip</p>
+
+<p>执行完之后，会提示执行如下命令：
+To start using your cluster, you need to run the following as a regular user:</p>
+
+<pre><code>mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+</code></pre>
+
+<p>记录下打印出来的 kubeadm join 命令,后续加节点需要用到
+You can now join any number of machines by running the following on each node
+as root:</p>
+
+<pre><code>kubeadm join 172.16.32.115:6443 --token a6ea9z.6o60cjpmndt32f06 --discovery-token-ca-cert-hash sha256:f2026367a4f77f315dd2d67572a9cea2e2c51cb5cecd9297a868116f3eed3715
+</code></pre>
+
+<h2 id="检查-master-组件是否起动完成">检查 master 组件是否起动完成</h2>
+
+<p>查看 kube-controller, scheduler, etcd 是否 healthy;</p>
+
+<pre><code>kubectl get cs
+</code></pre>
+
+<h2 id="检查-kube-proxy-组件是否起动完成">检查 kube-proxy 组件是否起动完成</h2>
+
+<p>查看 kube-proxy 是否 running;</p>
+
+<pre><code>kubectl -n kube-system get po
+</code></pre>
+
+<h2 id="去掉污点">去掉污点</h2>
+
+<p>如果需要调度pod到master节点，则去掉污点
+其中 master 为 hostname</p>
+
+<pre><code>kubectl taint nodes master  node-role.kubernetes.io/master-
+</code></pre>
+
+<h2 id="初始化网络插件-flannel-配置">初始化网络插件 flannel 配置</h2>
+
+<pre><code>kubectl apply -f kube-flannel.yaml
+</code></pre>
+
+<h2 id="添加slave节点">添加slave节点</h2>
+
+<pre><code>kubeadm join 172.16.32.115:6443 --token a6ea9z.6o60cjpmndt32f06 --discovery-token-ca-cert-hash sha256:f2026367a4f77f315dd2d67572a9cea2e2c51cb5cecd9297a868116f3eed3715
+</code></pre>
+
+<h2 id="检查各节点是否正常">检查各节点是否正常</h2>
+
+<pre><code>kubectl get no
+</code></pre>
+
+<h2 id="集群重置">集群重置</h2>
+
+<p>如搭建报错，执行如下命令删除集群重新搭建</p>
+
+<pre><code>kubeadm reset
+# 如已成功安装flannel 插件，还需清除 cni 插件
+ifconfig cni0 down
+ip link delete cni0
+ifconfig flannel.1 down
+ip link delete flannel.1
+rm -rf /var/lib/cni/
+</code></pre>
+
+
+<footer class=" footline" >
 	
-  
+</footer>
+
+
         
         </div> 
         
@@ -417,8 +548,6 @@
             
                 
                     
-                        
-                        
                     
                 
                 
@@ -432,6 +561,9 @@
             
             
                 
+                    
+                        
+                        
                     
                 
                 
@@ -545,6 +677,7 @@
             
                 
                     
+                    
                 
                 
 
@@ -563,6 +696,9 @@
             
             
                 
+                    
+                        
+                        
                     
                 
                 

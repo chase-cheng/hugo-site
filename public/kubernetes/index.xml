@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Index on Learning</title>
-    <link>http://example.org/</link>
-    <description>Recent content in Index on Learning</description>
+    <title>Kubernetes on Learning</title>
+    <link>http://example.org/kubernetes/</link>
+    <description>Recent content in Kubernetes on Learning</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Mon, 10 Dec 2018 10:37:23 +0800</lastBuildDate>
     
-	<atom:link href="http://example.org/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://example.org/kubernetes/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -52,21 +52,6 @@ vi /usr/lib/systemd/system/docker.service  docker.service 模版 [Unit] Descript
 kubectl create -f kubernetes-dashboard.yaml  获取刚刚创建的 kubernetes-dashboard-token
 kubectl describe -n kube-system secret/`kubectl -n kube-system get secret | grep kubernetes-dashboard-admin-token | awk &#39;{print $1}&#39;`  Prometheus 需要创建 ClusterRole, ServiceAccount, ClusterRoleBinding,ConfigMap,Deployment,Service
 kubectl create -f prometheus.yaml  </description>
-    </item>
-    
-    <item>
-      <title>Collection</title>
-      <link>http://example.org/star/collection/</link>
-      <pubDate>Mon, 10 Dec 2018 10:37:23 +0800</pubDate>
-      
-      <guid>http://example.org/star/collection/</guid>
-      <description> Mesos 的资源分配，解释 mesos 的二级调度和资源邀约机制，并详细介绍了保证资源分配公平的DRF算法（主导资源公平算法 Dominant Resource Fairness）。
-https://www.infoq.cn/article/analyse-mesos-part-04
- goroutine 调度器解析。
-https://tonybai.com/2017/06/23/an-intro-about-goroutine-scheduler/
- 一致性哈希算法。
-https://segmentfault.com/a/1190000013533592
-  </description>
     </item>
     
     <item>

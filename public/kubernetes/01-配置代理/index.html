@@ -9,7 +9,7 @@
 
     <link rel="shortcut icon" href="http://example.org/images/favicon.png" type="image/x-icon" />
 <link rel="icon" href="http://example.org/images/favicon.png" type="image/x-icon" />
-    <title>Index :: Learning</title>
+    <title>01-配置代理 :: Learning</title>
 
     
     <link href="http://example.org/css/nucleus.css?1544425800" rel="stylesheet">
@@ -36,7 +36,7 @@
     </style>
     
   </head>
-  <body class="" data-url="/">
+  <body class="" data-url="/kubernetes/01-%E9%85%8D%E7%BD%AE%E4%BB%A3%E7%90%86/">
     <nav id="sidebar" class="showVisitedLinks">
 
 
@@ -95,7 +95,7 @@
   
     
     <li data-nav-id="/kubernetes/" title="Kubernetes" class="dd-item 
-        
+        parent
         
         
         ">
@@ -121,7 +121,7 @@
  
   
     
-      <li data-nav-id="/kubernetes/01-%E9%85%8D%E7%BD%AE%E4%BB%A3%E7%90%86/" title="01-配置代理" class="dd-item ">
+      <li data-nav-id="/kubernetes/01-%E9%85%8D%E7%BD%AE%E4%BB%A3%E7%90%86/" title="01-配置代理" class="dd-item active">
         <a href="http://example.org/kubernetes/01-%E9%85%8D%E7%BD%AE%E4%BB%A3%E7%90%86/">
         01-配置代理
         <i class="fas fa-check read-icon"></i>
@@ -371,21 +371,185 @@
         <div id="overlay"></div>
         <div class="padding highlightable">
               
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                 
+                 
+                   01-配置代理 
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+<ul>
+<li><a href="#shadowsocks-科学上网">shadowsocks 科学上网</a></li>
+<li><a href="#ssserver">ssserver</a>
+<ul>
+<li><a href="#安装">安装</a></li>
+<li><a href="#配置">配置</a></li>
+</ul></li>
+<li><a href="#sslocal">sslocal</a>
+<ul>
+<li><a href="#安装-1">安装</a></li>
+<li><a href="#配置-1">配置</a></li>
+<li><a href="#privoxy">privoxy</a></li>
+<li><a href="#gfwlist">gfwlist</a></li>
+<li><a href="#环境变量">环境变量</a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
 
         
         <div id="body-inner">
           
+            <h1>01-配置代理</h1>
+          
 
         
 
-<span id="sidebar-toggle-span">
-<a href="#" id="sidebar-toggle" data-sidebar-toggle=""><i class="fas fa-bars"></i> navigation</a>
-</span>
 
- 
-<p>Notebook</p>
+
+
+<h1 id="shadowsocks-科学上网">shadowsocks 科学上网</h1>
+
+<p>参考文档: <a href="https://www.zfl9.com/ss-local.html">https://www.zfl9.com/ss-local.html</a></p>
+
+<h1 id="ssserver">ssserver</h1>
+
+<h2 id="安装">安装</h2>
+
+<pre><code># CentOS/RHEL
+yum -y install epel-release
+yum -y install python-pip
+pip install shadowsocks
+</code></pre>
+
+<h2 id="配置">配置</h2>
+
+<pre><code>echo &quot;{
+    &quot;server&quot;: &quot;1.2.3.4&quot;,
+    &quot;server_port&quot;: 8989,
+    &quot;method&quot;: &quot;aes-128-cfb&quot;,
+    &quot;password&quot;: &quot;123456&quot;,
+    &quot;local_address&quot;: &quot;127.0.0.1&quot;,
+    &quot;local_port&quot;: 1080,
+    &quot;fast_open&quot;: true,
+    &quot;workers&quot;: 1
+}&quot; &gt; /etc/shadowsocks.json
+
+ssserver -c /etc/shadowsocks.json -d start
+# 日志默认地址 /var/log/shadowsocks.log
+
+# 配置说明：
+{
+    &quot;server&quot;: &quot;1.2.3.4&quot;,          # 服务器IP
+    &quot;server_port&quot;: 8989,          # 服务器Port
+    &quot;method&quot;: &quot;aes-128-cfb&quot;,      # 加密方式
+    &quot;password&quot;: &quot;123456&quot;,         # 端口密码
+    &quot;local_address&quot;: &quot;127.0.0.1&quot;, # 本地监听IP
+    &quot;local_port&quot;: 1080,           # 本地监听Port
+    &quot;fast_open&quot;: true,            # TCP Fast Open
+    &quot;workers&quot;: 1                  # worker进程数量
+}
+</code></pre>
+
+<h1 id="sslocal">sslocal</h1>
+
+<h2 id="安装-1">安装</h2>
+
+<pre><code># CentOS/RHEL
+yum -y install epel-release
+yum -y install python-pip
+pip install shadowsocks
+</code></pre>
+
+<h2 id="配置-1">配置</h2>
+
+<pre><code>echo &quot;{
+    &quot;server&quot;: &quot;1.2.3.4&quot;,
+    &quot;server_port&quot;: 8989,
+    &quot;method&quot;: &quot;aes-128-cfb&quot;,
+    &quot;password&quot;: &quot;123456&quot;,
+    &quot;local_address&quot;: &quot;127.0.0.1&quot;,
+    &quot;local_port&quot;: 1080,
+    &quot;fast_open&quot;: true,
+    &quot;workers&quot;: 1
+}&quot; &gt; /etc/shadowsocks.conf
+
+sslocal -c /etc/shadowsocks.json -d start
+# 日志默认地址 /var/log/shadowsocks.log
+</code></pre>
+
+<h2 id="privoxy">privoxy</h2>
+
+<pre><code># CentOS/RHEL
+yum -y install privoxy
+</code></pre>
+
+<h2 id="gfwlist">gfwlist</h2>
+
+<pre><code># 关于 gfwlist2privoxy 脚本
+# 脚本依赖 base64、curl(支持 https)、perl5 v5.10.0+
+# 你也可以从这个网址下载 gfwlist.action，6 小时更新一次
+# https://zfl9.github.io/gfwlist2privoxy/gfwlist.action
+
+# 获取 gfwlist2privoxy 脚本
+curl -4sSkL https://raw.github.com/zfl9/gfwlist2privoxy/master/gfwlist2privoxy -O
+
+# 生成 gfwlist.action 文件
+bash gfwlist2privoxy '127.0.0.1:1080'
+
+# 检查 gfwlist.action 文件
+more gfwlist.action # 一般有 5000+ 行
+
+# 应用 gfwlist.action 文件
+mv -f gfwlist.action /etc/privoxy
+echo 'actionsfile gfwlist.action' &gt;&gt;/etc/privoxy/config
+
+# 启动 privoxy.service 服务
+systemctl start privoxy.service
+systemctl -l status privoxy.service
+
+</code></pre>
+
+<h2 id="环境变量">环境变量</h2>
+
+<pre><code># Initialization script for bash and sh
+# export proxy for GFW
+alias proxy_on='nohup sslocal -c /etc/shadowsocks.json &amp; systemctl start privoxy'
+alias proxy_off='systemctl stop privoxy &amp;&amp; pkill sslocal'
+alias proxy_export='export http_proxy=http://127.0.0.1:8118 &amp;&amp; export https_proxy=http://127.0.0.1:8118 &amp;&amp; export no_proxy=localhost'
+alias proxy_unset='unset http_proxy https_proxy no_proxy'
+alias proxy_test='curl google.com'
+</code></pre>
+
+
+<footer class=" footline" >
 	
-  
+</footer>
+
+
         
         </div> 
         
@@ -417,8 +581,6 @@
             
                 
                     
-                        
-                        
                     
                 
                 
@@ -432,6 +594,7 @@
             
             
                 
+                    
                     
                 
                 
@@ -448,6 +611,9 @@
             
             
                 
+                    
+                        
+                        
                     
                 
                 

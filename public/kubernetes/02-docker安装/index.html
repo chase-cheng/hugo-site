@@ -9,7 +9,7 @@
 
     <link rel="shortcut icon" href="http://example.org/images/favicon.png" type="image/x-icon" />
 <link rel="icon" href="http://example.org/images/favicon.png" type="image/x-icon" />
-    <title>Index :: Learning</title>
+    <title>02-docker安装 :: Learning</title>
 
     
     <link href="http://example.org/css/nucleus.css?1544425800" rel="stylesheet">
@@ -36,7 +36,7 @@
     </style>
     
   </head>
-  <body class="" data-url="/">
+  <body class="" data-url="/kubernetes/02-docker%E5%AE%89%E8%A3%85/">
     <nav id="sidebar" class="showVisitedLinks">
 
 
@@ -95,7 +95,7 @@
   
     
     <li data-nav-id="/kubernetes/" title="Kubernetes" class="dd-item 
-        
+        parent
         
         
         ">
@@ -140,7 +140,7 @@
  
   
     
-      <li data-nav-id="/kubernetes/02-docker%E5%AE%89%E8%A3%85/" title="02-docker安装" class="dd-item ">
+      <li data-nav-id="/kubernetes/02-docker%E5%AE%89%E8%A3%85/" title="02-docker安装" class="dd-item active">
         <a href="http://example.org/kubernetes/02-docker%E5%AE%89%E8%A3%85/">
         02-docker安装
         <i class="fas fa-check read-icon"></i>
@@ -371,21 +371,165 @@
         <div id="overlay"></div>
         <div class="padding highlightable">
               
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                 
+                 
+                   02-docker安装 
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#安装">安装</a></li>
+<li><a href="#配置">配置</a>
+<ul>
+<li><a href="#修改service文件">修改service文件</a></li>
+<li><a href="#docker-service-模版">docker.service 模版</a></li>
+<li><a href="#通过-daemon-json-修改文件系统和数据目录">通过 daemon.json 修改文件系统和数据目录</a></li>
+</ul></li>
+<li><a href="#启动">启动</a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
 
         
         <div id="body-inner">
           
+            <h1>02-docker安装</h1>
+          
 
         
 
-<span id="sidebar-toggle-span">
-<a href="#" id="sidebar-toggle" data-sidebar-toggle=""><i class="fas fa-bars"></i> navigation</a>
-</span>
 
- 
-<p>Notebook</p>
+
+
+<p>版本：docker17.03<br />
+ 官网安装指南: <a href="https://docs.docker.com/engine/installation/linux/centos/">https://docs.docker.com/engine/installation/linux/centos/</a></p>
+
+<h2 id="安装">安装</h2>
+
+<pre><code>#如果存在，移除旧的docker
+yum remove docker docker-common container-selinux docker-selinux docker-engine
+rpm -e $(rpm -q docker-ce)
+
+#安装工具
+yum install -y yum-utils
+
+#添加仓库
+yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+yum makecache
+yum install -y policycoreutils-python
+
+#下载并安装docker-ce-selinux
+wget https://download.docker.com/linux/centos/7/x86_64/stable/Packages/docker-ce-selinux-17.03.2.ce-1.el7.centos.noarch.rpm
+rpm -ivh docker-ce-selinux-17.03.2.ce-1.el7.centos.noarch.rpm
+
+#查看docker-ce版本并且安装
+yum list docker-ce --showduplicates | sort -r 
+yum -y install docker-ce-17.03.2.ce
+</code></pre>
+
+<h2 id="配置">配置</h2>
+
+<h3 id="修改service文件">修改service文件</h3>
+
+<p>主要修改 ExecStart 参数，添加一个 Environment 参数，用于设置docker的代理，拉取镜像</p>
+
+<pre><code>vi /usr/lib/systemd/system/docker.service
+</code></pre>
+
+<h3 id="docker-service-模版">docker.service 模版</h3>
+
+<pre><code>[Unit]
+Description=Docker Application Container Engine
+Documentation=https://docs.docker.com
+After=network.target firewalld.service
+
+[Service]
+Environment=&quot;HTTP_PROXY=http://127.0.0.1:8118&quot; &quot;HTTPS_PROXY=http://127.0.0.1:8118&quot;
+Type=notify
+# the default is not to use systemd for cgroups because the delegate issues still
+# exists and systemd currently does not support the cgroup feature set required
+# for containers run by docker
+ExecStart=/usr/bin/dockerd  -H unix:///var/run/docker.sock -H tcp://0.0.0.0:6071 --insecure-registry=0.0.0.0/0
+ExecReload=/bin/kill -s HUP $MAINPID
+# Having non-zero Limit*s causes performance problems due to accounting overhead
+# in the kernel. We recommend using cgroups to do container-local accounting.
+LimitNOFILE=infinity
+LimitNPROC=infinity
+LimitCORE=infinity
+# Uncomment TasksMax if your systemd version supports it.
+# Only systemd 226 and above support this version.
+#TasksMax=infinity
+TimeoutStartSec=0
+# set delegate yes so that systemd does not reset the cgroups of docker containers
+Delegate=yes
+# kill only the docker process, not all processes in the cgroup
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target
+
+</code></pre>
+
+<h3 id="通过-daemon-json-修改文件系统和数据目录">通过 daemon.json 修改文件系统和数据目录</h3>
+
+<pre><code>mkdir -p /etc/docker
+cat &gt; /etc/docker/daemon.json &lt;&lt;EOF
+{
+	&quot;storage-driver&quot;: &quot;overlay2&quot;,
+	&quot;storage-opts&quot;: [
+        &quot;overlay2.override_kernel_check=true&quot;
+	],
+	&quot;graph&quot;: &quot;/data/docker&quot;
+}
+EOF
+</code></pre>
+
+<h2 id="启动">启动</h2>
+
+<pre><code>#启动
+systemctl daemon-reload
+systemctl enable docker
+systemctl restart docker
+
+#查看版本，详细信息
+systemctl status docker
+docker info
+docker version
+</code></pre>
+
+
+<footer class=" footline" >
 	
-  
+</footer>
+
+
         
         </div> 
         
@@ -417,8 +561,6 @@
             
                 
                     
-                        
-                        
                     
                 
                 
@@ -432,6 +574,9 @@
             
             
                 
+                    
+                        
+                        
                     
                 
                 
@@ -449,6 +594,7 @@
             
                 
                     
+                    
                 
                 
 
@@ -464,6 +610,9 @@
             
             
                 
+                    
+                        
+                        
                     
                 
                 

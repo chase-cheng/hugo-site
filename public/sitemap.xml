@@ -3,8 +3,52 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://example.org/kubernetes/01-%E9%85%8D%E7%BD%AE%E4%BB%A3%E7%90%86/</loc>
+    <lastmod>2018-12-10T10:37:23+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/</loc>
+    <lastmod>2018-12-10T10:37:23+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/kubernetes/02-docker%E5%AE%89%E8%A3%85/</loc>
+    <lastmod>2018-12-10T10:37:23+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/kubernetes/03-kubeadm%E5%AE%89%E8%A3%85/</loc>
+    <lastmod>2018-12-10T10:37:23+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/kubernetes/05-%E7%BB%84%E4%BB%B6%E5%AE%89%E8%A3%85/</loc>
+    <lastmod>2018-12-10T10:37:23+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://example.org/star/collection/</loc>
     <lastmod>2018-12-10T10:37:23+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/kubernetes/prometheus/</loc>
+    <lastmod>2018-12-10T10:37:23+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/kubernetes/istio/</loc>
+    <lastmod>2018-12-10T10:37:23+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/kubernetes/readme/</loc>
+    <lastmod>2018-12-10T10:37:23+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/kubernetes/04-kubernetes%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</loc>
   </url>
   
   <url>
@@ -13,7 +57,7 @@
   </url>
   
   <url>
-    <loc>http://example.org/</loc>
+    <loc>http://example.org/kubernetes/</loc>
     <lastmod>2018-12-10T10:37:23+08:00</lastmod>
     <priority>0</priority>
   </url>

@@ -1,4 +1,4 @@
-baseURL = "http://example.org/"
+baseURL = "https://chase-cheng.github.io"
 languageCode = "zh-cn"
 title = "Learning"
 theme = "hugo-theme-learn-master"

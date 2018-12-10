@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Learning</title>
+    <link>http://example.org/</link>
+    <description>Recent content on Learning</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 10 Dec 2018 10:37:23 +0800</lastBuildDate>
+    
+	<atom:link href="http://example.org/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Collection</title>
+      <link>http://example.org/star/collection/</link>
+      <pubDate>Mon, 10 Dec 2018 10:37:23 +0800</pubDate>
+      
+      <guid>http://example.org/star/collection/</guid>
+      <description> Mesos 的资源分配，解释 mesos 的二级调度和资源邀约机制，并详细介绍了保证资源分配公平的DRF算法（主导资源公平算法 Dominant Resource Fairness）。
+https://www.infoq.cn/article/analyse-mesos-part-04
+ goroutine 调度器解析。
+https://tonybai.com/2017/06/23/an-intro-about-goroutine-scheduler/
+ 一致性哈希算法。
+https://segmentfault.com/a/1190000013533592
+  </description>
+    </item>
+    
+  </channel>
+</rss>

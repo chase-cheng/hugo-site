@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: istio-svcs
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: prometheus.test
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: prometheus
+          servicePort: 9090
+  - host: tracing.test
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: tracing
+          servicePort: 80

@@ -5,4 +5,4 @@ weight: 3
 ---
 
 ## Mysql实战
-<img src="https://github.com/chase-cheng/resource/raw/master/images/mysql.jpeg" height=512px /> 
+<img src="https://raw.github.com/chase-cheng/resource/master/images/mysql.jpeg" height=512px /> 

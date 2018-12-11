@@ -55,9 +55,9 @@ kubectl taint nodes master  node-role.kubernetes.io/master-
 ```
 
 ## 初始化网络插件 flannel 配置
-[kube-flannel.yaml](https://github.com/chase-cheng/resource/blob/master/yamls/kube-flannel.yaml)  
+[kube-flannel.yaml](https://raw.github.com/chase-cheng/resource/master/yamls/kube-flannel.yaml)  
 ```
-kubectl apply -f https://github.com/chase-cheng/resource/blob/master/yamls/kube-flannel.yaml
+kubectl apply -f https://raw.github.com/chase-cheng/resource/master/yamls/kube-flannel.yaml
 ```
 
 ## 添加slave节点

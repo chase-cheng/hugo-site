@@ -1,4 +1,9 @@
-# Kubernetes 集群搭建
+---
+title: "04-Kubernetes 集群搭建"
+date: 2018-12-10T10:37:23+08:00
+weight: 04
+---
+
 kubeadm v1.12.2    
 kubernetes v1.12
 
@@ -50,8 +55,9 @@ kubectl taint nodes master  node-role.kubernetes.io/master-
 ```
 
 ## 初始化网络插件 flannel 配置
+[kube-flannel.yaml](https://github.com/chase-cheng/resource/blob/master/yamls/kube-flannel.yaml)  
 ```
-kubectl apply -f kube-flannel.yaml
+kubectl apply -f https://github.com/chase-cheng/resource/blob/master/yamls/kube-flannel.yaml
 ```
 
 ## 添加slave节点

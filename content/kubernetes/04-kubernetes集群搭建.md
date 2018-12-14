@@ -1,5 +1,5 @@
 ---
-title: "04-Kubernetes 集群搭建"
+title: "Kubernetes 集群搭建"
 date: 2018-12-10T10:37:23+08:00
 weight: 04
 ---
